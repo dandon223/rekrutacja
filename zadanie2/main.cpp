@@ -2,12 +2,13 @@
 #include <vector>
 #include <random>
 #include <chrono>
+#include "header/bignum.h"
 
 unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 std::default_random_engine gen(seed);
 std::uniform_int_distribution<std::mt19937::result_type> dist(0,100);
 
-int getValue(const std::vector<std::vector<int>>& matrixA, int row, int column, int M , int N){
+int getValue(const std::vector<std::vector<unsigned int>>& matrixA, int row, int column, int M , int N){
     int result = 1;
     for(int i=0 ; i < M ; i++){
         for(int j=0;j<N;j++){
@@ -18,16 +19,16 @@ int getValue(const std::vector<std::vector<int>>& matrixA, int row, int column, 
     }
     return result;
 }
-const std::vector<std::vector<int>> getMatrixA(int M, int N, std::vector<int>& numberOfZeros){
+const std::vector<std::vector<unsigned int>> getMatrixA(int M, int N, std::vector<int>& numberOfZeros){
 
-    std::vector<std::vector<int>> matrixA;
+    std::vector<std::vector<unsigned int>> matrixA;
     numberOfZeros.reserve(M);
     for(int i=0 ; i < M ; i++){
-        std::vector<int> row;
+        std::vector<unsigned int> row;
         row.reserve(N);
         numberOfZeros.push_back(0);
         for(int j=0;j<N;j++){
-            int value = dist(gen);
+            unsigned int value = dist(gen);
             row.push_back(value);
             if(value == 0 ){
                 numberOfZeros[i] += 1;
@@ -51,7 +52,7 @@ int main(int argc, char *argv[]) {
     int N = std::stoi(argv[2]);
 
     std::vector<int> numberOfZeros;
-    const std::vector<std::vector<int>> matrixA = getMatrixA(M, N, numberOfZeros );
+    const std::vector<std::vector<unsigned int>> matrixA = getMatrixA(M, N, numberOfZeros );
 
     int sumOfZeros = 0;
     for(int numberOfZero : numberOfZeros){
@@ -91,7 +92,7 @@ int main(int argc, char *argv[]) {
             std::cout<<"\n";
         }
     }else{
-        long long everyProduct = 1;
+        bignum everyProduct = 1;
         for(int i=0 ; i < M ; i++){
             for(int j=0;j<N;j++){
                 everyProduct *= matrixA[i][j];
@@ -100,7 +101,7 @@ int main(int argc, char *argv[]) {
 
         for(int i=0;i<M;i++){
             for(int j=0;j<N;j++){
-                std::cout<<everyProduct/matrixA[i][j]<<", ";
+                std::cout<<(everyProduct/matrixA[i][j]).to_string()<<", ";
             }
             std::cout<<"\n";
         }
