@@ -8,8 +8,8 @@ unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 std::default_random_engine gen(seed);
 std::uniform_int_distribution<std::mt19937::result_type> dist(0,100);
 
-int getValue(const std::vector<std::vector<unsigned int>>& matrixA, int row, int column, int M , int N){
-    int result = 1;
+bignum getValue(const std::vector<std::vector<unsigned int>>& matrixA, int row, int column, int M , int N){
+    bignum result = 1;
     for(int i=0 ; i < M ; i++){
         for(int j=0;j<N;j++){
             if(i != row || j != column){
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
                     if(matrixA[i][j] != 0){
                         std::cout<<0<<", ";
                     }else{
-                        std::cout<<getValue(matrixA,i,j,M,N)<<", ";
+                        std::cout<<getValue(matrixA,i,j,M,N).to_string()<<", ";
                     }
                 }
             }
