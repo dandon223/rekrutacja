@@ -1,6 +1,8 @@
 # rekrutacja
 
+## zadanie 1
 
+Rozwiązanie zadania 1 znajduje się w folderze zadanie1.
 ## zadanie 2
 
 Algorytm zlicza wystąpienia zer dla każdego rzędu.
