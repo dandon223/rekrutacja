@@ -3,6 +3,10 @@
 #include <random>
 #include <chrono>
 
+unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+std::default_random_engine gen(seed);
+std::uniform_int_distribution<std::mt19937::result_type> dist(0,100);
+
 int getValue(const std::vector<std::vector<int>>& matrixA, int row, int column, int M , int N){
     int result = 1;
     for(int i=0 ; i < M ; i++){
@@ -14,17 +18,9 @@ int getValue(const std::vector<std::vector<int>>& matrixA, int row, int column, 
     }
     return result;
 }
-int main(int argc, char *argv[]) {
-
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    std::default_random_engine gen(seed);
-    std::uniform_int_distribution<std::mt19937::result_type> dist(0,10);
-
-    int M = std::stoi(argv[1]);
-    int N = std::stoi(argv[2]);
+const std::vector<std::vector<int>> getMatrixA(int M, int N, std::vector<int>& numberOfZeros){
 
     std::vector<std::vector<int>> matrixA;
-    std::vector<int> numberOfZeros;
     numberOfZeros.reserve(M);
     for(int i=0 ; i < M ; i++){
         std::vector<int> row;
@@ -46,17 +42,23 @@ int main(int argc, char *argv[]) {
         }
         std::cout<<"\n";
     }
-    std::cout<<"Number of zeros:\n";
-    for(int numberOfZero : numberOfZeros){
-        std::cout <<numberOfZero<<", ";
-    }
-    std::cout<<"\n";
+    return matrixA;
+}
+
+int main(int argc, char *argv[]) {
+
+    int M = std::stoi(argv[1]);
+    int N = std::stoi(argv[2]);
+
+    std::vector<int> numberOfZeros;
+    const std::vector<std::vector<int>> matrixA = getMatrixA(M, N, numberOfZeros );
+
     int sumOfZeros = 0;
     for(int numberOfZero : numberOfZeros){
         sumOfZeros += numberOfZero;
     }
+    std::cout<<"Matrix B:\n";
     if(sumOfZeros > 1){
-        std::cout<<"Matrix B:\n";
         for(int i=0;i<M;i++){
             for(int j=0;j<N;j++){
                 std::cout<<0<<", ";
@@ -89,7 +91,7 @@ int main(int argc, char *argv[]) {
             std::cout<<"\n";
         }
     }else{
-        int everyProduct = 1;
+        long long everyProduct = 1;
         for(int i=0 ; i < M ; i++){
             for(int j=0;j<N;j++){
                 everyProduct *= matrixA[i][j];
